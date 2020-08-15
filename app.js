@@ -42,6 +42,6 @@ app.use(function(err, req, res, next) {
 });
 
 app.get('*',(req,res)=>{
-  res.send("404!! Network Issue");
+  res.sendFile(path.join(__dirname + '/client/build/index.js'));
 })
 module.exports = app;
