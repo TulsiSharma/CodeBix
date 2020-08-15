@@ -1,0 +1,287 @@
+body{
+    /* font-family:'Mallanna', sans-serif;; */
+    /* font-size: 19px; */
+    margin: 0px;
+    padding: 0px;
+}
+.box{
+    display:block;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.box textarea{
+    width: 100%;
+    height: 240px;
+    overflow-x: scroll;
+    border: none;
+}
+.box .heading{
+    background:whitesmoke;
+    border: 1px solid grey;
+}
+.box .heading h5{
+    padding-left: 10px;
+}
+
+.button{
+    margin-top: 25px;
+}
+
+.footer{
+    margin-top: 10px;
+    background: black;
+    min-height: 55px;
+    margin-bottom: 0px;
+}
+.footer h4{
+    color: white;
+    float :left;
+    padding-right: 5px;
+    padding-bottom: 0px;
+}
+.footer span{
+    float: left;
+    color: white;
+    font-size: 13px;
+    line-height: 2.7;
+}
+
+.footer .footer-icon a{
+    float: right;
+    padding:10px;
+    font-size: 22px;    
+    color: white;
+    display: inline-block;
+}
+.gap{
+    height: 24px;
+}
+.editor .editor-nav  Button{
+    background-color: whitesmoke;
+    color: black;
+    margin: 7px 5px;
+    float: right;
+    display:block;
+    border: none;
+   
+    
+}
+.editor .editor-nav{
+    height:45px;
+    background:  #f8f9fa!important;
+    border: 1px solid lightgray;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+.editor{
+    border: 1px solid lightgray;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.vertical-num{
+    height: 100px;
+    width: 28px;
+    position:absolute;
+
+    
+}
+
+  #inputbox{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+    border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+    border-image: none;
+    border-radius: 6px 6px 6px 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12)inset;
+    width: 100%;
+    height: 230px;
+    color:#555555;
+    border-right-color:lightgray ;
+    border-bottom-color: lightgray;
+ 
+  font-size: 1em;
+  line-height: 1.4em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+  }
+  #inputbox:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+.header{
+    /* border: 1px solid lightgray; */
+    padding: 8px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    background-color:whitesmoke;
+    
+}
+.outputarea{
+    width: 100%;
+    /* border: 1px solid lightgray; */
+    /* pointer-events: none; */
+    margin-top: 3px;
+    border: none;
+    background-color: whitesmoke;
+    padding: 8px;
+    font-weight: 300;
+    font-size: 16px;
+
+}
+.scrollbar{
+    overflow: hidden;
+    
+}
+.scrollbar:hover{
+    overflow: scroll;
+}
+.scrollbar:onf
+.outputbox{
+    margin-top: 20px;
+}
+.filename{
+    width: 100%;
+    margin-right: 20px;
+    text-align: center; 
+    
+}
+.filename input{
+    display:inline-block;
+    border: block;
+    height: 35px;
+    width: 100%;
+    border-radius: 3px;
+    background-color: #f8f9fa!important;
+    color:black;
+    border: none ;
+    margin-top: 3px;
+    font-style: initial;
+    
+}
+.filename input :hover{
+    border-color: lightgray;
+}
+.back-div{
+    border:none;
+    background-color:teal;
+    padding-left: 10px;
+    padding-top: 20px;
+    height:47px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+}
+
+
+.card-wrap{
+    min-height: 90px;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 20px;
+     font-family:'Mallanna', sans-serif;;
+}
+.card-wrap:hover .cover{
+    opacity: 1;
+    min-height: inherit;
+    z-index: 4;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.cover{
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 0px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s, height 0.5s linear;
+    
+}
+.cover ul{
+    display: inline-flex;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+    padding-left:30px ;
+    padding-right: 30px;
+    margin-top: 26px;
+    list-style: none;
+    height: 100%;
+    position: relative;
+}
+.cover ul li{
+    border: block;
+    color:white;
+    cursor: pointer;
+    font-size: 23px;
+    border: block;
+}
+.inner-layer{
+    z-index: 2;
+    position: inherit;
+    min-height: inherit;
+    
+}
+.fileimage{
+    min-height: inherit;
+    text-align: center;
+}
+.inner-layer p{
+    font-family: 'Mallanna', sans-serif;
+    font-size: 20px;
+    padding-top: 12px;
+    padding-left: 10px
+}
+.inner-layer .fileimage i{
+    font-size: 40px;
+    padding-top: 18px;
+}
+.foot{
+    text-align: right;
+    padding-right: 10px;
+    color: teal;
+    
+}
+.emptymsg{
+    padding-top: 17%;
+    text-align: center;
+}
+.foot #status{
+    padding-bottom: 0px;
+}
+
+.signin{
+    text-align: center;
+}
+.signin span{
+    border: block;
+    padding: 14px;
+}
+.signin span i{
+    font-size: 30px;
+    color: black;        
+}
+.pagination{
+    border: 1px solid lightgray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+}
+.pagination Button{
+    background-color: whitesmoke;
+    color: black;
+    
+    
+}
