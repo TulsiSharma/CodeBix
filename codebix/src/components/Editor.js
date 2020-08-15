@@ -79,7 +79,7 @@ class Editor extends React.Component {
     updatevalue=(event)=>{
         if(this.props.oldvalue !== event.currentTarget.textContent){
             off(this.props.editor,"change",this.props.changedata);
-            console.log(hasHandler(this.props.editor,"change"));
+            // console.log(hasHandler(this.props.editor,"change"));
             let code=this.props.editor.getValue();
             if(this.props.issaved){
                 this.props.setsaved();
@@ -99,13 +99,10 @@ class Editor extends React.Component {
                     // }
                     this.props.setmode("C++");
                     this.props.editor.setOption("mode","text/x-c++src");
-                    setTimeout(()=>{
                     this.props.editor.setValue(cpp);
-                    },1000);
                     // this.props.editor.setValue(cpp);
-                    setTimeout(()=>{
-                        this.props.setlength(this.props.editor.getValue().length);
-                        },1100);
+                    this.props.setlength(this.props.editor.getValue().length);
+    
                     // this.props.setlength(this.props.editor.getValue().length);
                     break;
                 case "C":

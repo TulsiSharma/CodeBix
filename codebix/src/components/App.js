@@ -105,7 +105,8 @@ class App extends React.Component{
     }
 
     onrefresh=()=>{
-        this.updaterecent(this.state.editor.getValue());
+        if(this.state.length > 0 && this.state.length < this.state.editor.getValue().length)
+            this.updaterecent(this.state.editor.getValue());
     }
     setoldvalue=(val)=>{
         this.setState({oldvalue:val});
