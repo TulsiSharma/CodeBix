@@ -1,9 +1,10 @@
 import React from "react";
 import { Col, Row } from "reactstrap";
+import { Link } from "react-router-dom";
 
 class Savecards extends React.Component{
     handleedit=()=>{
-        this.props.editfile(this.props.ind);
+        // this.props.editfile(this.props.ind);
     }
     handleshare=(ind)=>{
         this.props.setid(this.props.ind);
@@ -16,12 +17,14 @@ class Savecards extends React.Component{
         if(!this.props.result[this.props.ind]){
             return null;
         }
+        if(!this.props.uid)
+            console.log("nulllll");
         return(
             <Col lg="4" md="6" sm="9" xs="12">
                 <div className="card-wrap">
                     <div className="cover">
                         <ul>
-                            <li onClick={()=>this.handleedit()}><i className="fas fa-edit"></i></li>
+                            <li onClick={()=>this.handleedit()}><Link style={{color:"white"}} target="_blank" to={`/files/${btoa(this.props.uid)}/${this.props.ind}`}><i className="fas fa-edit"></i></Link></li>
                             <li onClick={()=>this.handleshare(this.props.ind)}><i className="fas fa-share"></i></li>
                             <li onClick={()=>this.handledelete()}><i className="fas fa-trash"></i></li>
                         </ul>
@@ -29,7 +32,7 @@ class Savecards extends React.Component{
                     <Row className="inner-layer">
                         <Col lg="3" md="3" sm="3" xs="3" style={{minHeight:"inherit"}}>
                             <div className="fileimage">
-                                <i class="fa fa-file" aria-hidden="true"></i>
+                                <i className="fa fa-file" aria-hidden="true"></i>
                             </div>
                         </Col>
                         <Col lg="9" md="9" sm="9" xs="9">

@@ -14,8 +14,8 @@ class Filecontainer extends React.Component{
                 <h4 style={{color:"lightgray"}}>Choose language first.</h4>
             </div>);
         }
-        if(this.props.result===null && this.props.flag){
-            console.log("empty");
+        if((this.props.uid===null) || (this.props.result===null && this.props.flag)){
+            
             return(
                 <div className="emptymsg">
                     <Spinner style={{ width: '4rem', height: '4rem' }} type="grow"/>
@@ -31,7 +31,7 @@ class Filecontainer extends React.Component{
         return(
                 <Row>
                    {Object.keys(this.props.result).map(key=>(
-                       <Savecards key={key} ind={key} result={this.props.result} handledelete={this.handledelete} editfile={this.props.editfile} setid={this.props.setid} setshare={this.props.setshare}/> 
+                       <Savecards uid={this.props.uid} key={key} ind={key} result={this.props.result} handledelete={this.handledelete} editfile={this.props.editfile} setid={this.props.setid} setshare={this.props.setshare}/> 
                    ))}
                 </Row>
         );

@@ -3,6 +3,7 @@ import { Col, Row} from "reactstrap";
 
 class Cards extends React.Component{
     handleclick=()=>{
+        // event.currentTarget.style["box-shadow"]="0 4px 8px 0 rgba(1, 1, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
         this.props.editrecent(this.props.recent[this.props.ind],this.props.ind);
     }
     render()

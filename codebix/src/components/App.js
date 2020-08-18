@@ -10,7 +10,7 @@ import Authanticate from "./Authanticate";
 import { c, cpp,python2,python3,Java,NodeJS,Ruby,cpp14,csharp } from "../data";
 import Axios from "axios";
 import About from "./About";
-import { on,off,hasHandler } from "codemirror/src/util/event.js";
+import { on,off} from "codemirror/src/util/event.js";
 class App extends React.Component{
     state={
         editor:{},
@@ -35,18 +35,16 @@ class App extends React.Component{
         inputdata:"",
         isoutput:false,
         output:null,
-        about: false
-        
+        about: false,
+        timer:null,
+        wordlen:0     
     }
     componentWillMount(){
-        firebase.auth().onAuthStateChanged(user=>{
-            if(user){  
-                this.authHandler({user});
-            }
-        })
+        this.handlerefresh();
       
     }
     componentDidMount(){
+        window.removeEventListener("beforeunload",this.onrefresh);
         window.addEventListener("beforeunload",this.onrefresh);
         const res=localStorage.getItem("CodeBix");
         if(res){
@@ -83,8 +81,8 @@ class App extends React.Component{
     }
 
      componentWillUnmount(){
-         window.removeEventListener("beforeunload",this.onrefresh);
-         if(this.state.length>0 && this.state.length < this.state.editor.getValue().length){
+        window.removeEventListener("beforeunload",this.onrefresh);
+        if(this.state.length>0 && this.state.length < this.state.editor.getValue().length){
              this.savedlastfile();
          }
         if(this.ref) {
@@ -105,8 +103,17 @@ class App extends React.Component{
     }
 
     onrefresh=()=>{
-        if(this.state.length > 0 && this.state.length < this.state.editor.getValue().length)
+        if((this.state.issaved) || (this.state.length > 0 && this.state.length < this.state.editor.getValue().length))
             this.updaterecent(this.state.editor.getValue());
+        window.removeEventListener("beforeunload",this.onrefresh);
+
+    }
+    handlerefresh=()=>{
+        firebase.auth().onAuthStateChanged(user=>{
+            if(user){  
+                this.authHandler({user});
+            }
+        });
     }
     setoldvalue=(val)=>{
         this.setState({oldvalue:val});
@@ -340,11 +347,11 @@ class App extends React.Component{
                     break;
                 case "Python 2":
                     this.state.editor.setOption("mode","text/x-python");
-                    this.props.editor.setOption("version",2);
+                    this.state.editor.setOption("version",2);
                     break;
                 case "Python 3":
                     this.state.editor.setOption("mode","text/x-python");
-                    this.props.editor.setOption("version",3);
+                    this.state.editor.setOption("version",3);
                     break;
                 case "Java":
                     this.state.editor.setOption("mode","text/x-java");
@@ -402,24 +409,55 @@ class App extends React.Component{
             this.setstatus(data.name);
             
         }, 1000);
-        
-       
-        on(this.state.editor,"change",this.changedata);
+        // on(this.state.editor,"keypress",this.changedata);
+        // on(this.state.editor,"keyup",this.change_after_no_type);
         }
     }
-    changedata=()=>{
+    change_after_no_type=()=>{
         let data="";
         if(this.state.uid && this.state.issaved){
+            var wordlen=this.state.editor.getValue().length;
             data=this.state.savefiles[this.state.id];
             data.content=this.state.editor.getValue();
-                this.setstatus("Saving...");
-                setTimeout(() => {
+            setTimeout(() => {
+                if(wordlen===this.state.editor.getValue().length){
+                    this.setstatus("Saving...");
+                    this.updatevalue(this.state.id,data);
                     this.setstatus(data.name);
-                }, 300);
-                // setInterval(() => {
-                //     this.updatevalue(this.state.id,data);
-                //     console.log("hellow");   
-                // }, 4000);
+                }
+            }, 1500);
+        }
+        else{
+            this.setstatus("Login First!!");
+            setTimeout(()=>{
+                this.setstatus(data.name);
+            },500);
+        }
+    }
+    
+    changedata=()=>{
+        let data="";
+        if(this.state.uid && this.state.issaved){            
+            data=this.state.savefiles[this.state.id];
+            data.content=this.state.editor.getValue();
+            var intervalid=null;
+            if(this.state.timer===null){
+                // console.log("ffffffffffffffffff");
+                this.setState({timer:1});
+                this.setstatus("Saving...");
+                intervalid=setInterval(() => {
+                    this.setState({timer:this.state.timer+1})
+                    if(this.state.timer>=5){
+                        // console.log(data.content);
+                        this.updatevalue(this.state.id,data);
+                        // console.log("kkkkkkkkkk");
+                            this.setstatus(data.name);
+                            clearInterval(intervalid);
+                            this.setState({timer:null});
+                    }
+                }, 1000);
+            }
+                
         }
         else{
             this.setstatus("Login First!!");
@@ -491,9 +529,14 @@ class App extends React.Component{
     }
 
     editrecent=(val,ind)=>{
-        off(this.state.editor,"change",this.changedata);
-        console.log(hasHandler(this.state.editor,"change"));
-        if(this.state.length > 0 && this.state.length < this.state.editor.getValue().length){
+        off(this.state.editor,"keypress",this.changedata);
+        off(this.state.editor,"keyup",this.change_after_no_type);
+        if(this.state.length>=this.state.editor.getValue().length){
+            var recent ={...this.state.recent};
+            delete recent[ind];
+            this.setState({recent});
+        }
+        if((this.state.issaved ) || (this.state.length > 0 && this.state.length < this.state.editor.getValue().length)){
             this.updaterecent(this.state.editor.getValue(),ind);
         }
         this.setState({issaved:false});
@@ -517,11 +560,11 @@ class App extends React.Component{
                 break;
             case "Python 2":
                 this.state.editor.setOption("mode","text/x-python");
-                this.props.editor.setOption("version",2);
+                this.state.editor.setOption("version",2);
                 break;
             case "Python 3":
                 this.state.editor.setOption("mode","text/x-python");
-                this.props.editor.setOption("version",3);
+                this.state.editor.setOption("version",3);
                 break;
             case "Java":
                 this.state.editor.setOption("mode","text/x-java");
@@ -540,9 +583,14 @@ class App extends React.Component{
         }
         this.setState({filename:val.name});
         this.state.editor.setValue(val.content);
-        this.setlength(1);
-        on(this.state.editor,"change",this.changedata);
+        this.setlength(1);  
+        if(val.status==="saved"){
+            on(this.state.editor,"keypress",this.changedata);
+            on(this.state.editor,"keyup",this.change_after_no_type);
+        }
+
     }
+
     
     Exicutecode=async()=>{
         var lang="";
@@ -616,7 +664,7 @@ class App extends React.Component{
                     <div className="gap"></div>
                     <div className="" style={{marginLeft:"20px",marginRight:"20px"}}>
                         <Row>
-                            <Leftcomponent changedata={this.changedata} savefile={this.savefile} setsignup={this.setsignup} uid={this.state.uid} setid={this.setid}  output={this.state.output} isoutput={this.state.isoutput} updateinput={this.updateinput} inputdata={this.state.inputdata} Exicutecode={this.Exicutecode} setoldvalue={this.setoldvalue} oldvalue={this.state.oldvalue} setlength={this.setlength} length={this.state.length} setsaved={this.setsaved} editor={this.state.editor} seteditor={this.seteditor} toggle={this.toggle} setmode={this.setmode} setdropdown={this.setdropdown} dropdownvalue={this.state.dropdownvalue} issaved={this.state.issaved} status={this.state.status} setstatus={this.setstatus} path={this.props.match.url} id={this.state.id} updaterecent={this.updaterecent}/>
+                            <Leftcomponent change_after_no_type={this.change_after_no_type} changedata={this.changedata} savefile={this.savefile} setsignup={this.setsignup} uid={this.state.uid} setid={this.setid}  output={this.state.output} isoutput={this.state.isoutput} updateinput={this.updateinput} inputdata={this.state.inputdata} Exicutecode={this.Exicutecode} setoldvalue={this.setoldvalue} oldvalue={this.state.oldvalue} setlength={this.setlength} length={this.state.length} setsaved={this.setsaved} editor={this.state.editor} seteditor={this.seteditor} toggle={this.toggle} setmode={this.setmode} setdropdown={this.setdropdown} dropdownvalue={this.state.dropdownvalue} issaved={this.state.issaved} status={this.state.status} setstatus={this.setstatus} path={window.location.href} id={this.state.id} updaterecent={this.updaterecent}/>
                             <Rightcomponent recent={this.state.recent} editrecent={this.editrecent}/>
                         </Row>
                     </div>

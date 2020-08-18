@@ -8,9 +8,9 @@ class Share extends React.Component{
         document.execCommand("copy");
     }
     render(){
-        const file1 =`${this.props.path}/${this.props.file}/${btoa(this.props.uid)}/${this.props.id}`;
+        const file1 =`${this.props.path}${this.props.file}/${btoa(this.props.uid)}/${this.props.id}`;
         
-        const file2=`${this.props.path}/${btoa(this.props.uid)}/${this.props.id}`
+        const file2=`${this.props.path}${btoa(this.props.uid)}/${this.props.id}`;
     
         return(
             <div>

@@ -21,7 +21,7 @@ class Footer extends React.Component{
                                     <a href="https://www.linkedin.com/in/tulsisharma/" target="_blank" rel="noopener noreferrer">
                                         <i className="fab fa-linkedin"></i>
                                     </a>
-                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=tulsisharma4422@gmail.com" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=codebix4422@gmail.com" target="_blank" rel="noopener noreferrer">
                                         <i className="fas fa-envelope"></i>
                                     </a>
                                 </div>

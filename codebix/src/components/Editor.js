@@ -26,7 +26,7 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 import { Button, ButtonDropdown, Col, DropdownItem, DropdownMenu, DropdownToggle, Row } from "reactstrap";
 import { c, cpp ,python2,python3,Java,NodeJS,Ruby,cpp14,csharp} from "../data";
-import { off,hasHandler } from "codemirror/src/util/event.js";
+import { off} from "codemirror/src/util/event.js";
 
 class Editor extends React.Component {
     InputRef=React.createRef();
@@ -78,13 +78,15 @@ class Editor extends React.Component {
     }
     updatevalue=(event)=>{
         if(this.props.oldvalue !== event.currentTarget.textContent){
-            off(this.props.editor,"change",this.props.changedata);
+            off(this.props.editor,"keypress",this.props.changedata);
+            off(this.props.editor,"keyup",this.props.change_after_no_type);
+
             // console.log(hasHandler(this.props.editor,"change"));
             let code=this.props.editor.getValue();
             if(this.props.issaved){
                 this.props.setsaved();
             }
-            if(this.props.length > 0 && this.props.length < this.props.editor.getValue().length){
+            if((this.props.issaved)|| (this.props.length > 0 && this.props.length < this.props.editor.getValue().length)){
                 // console.log("==>>  "+this.props.editor.getValue());
                 this.props.updaterecent(code);
             }

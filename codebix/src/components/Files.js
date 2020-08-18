@@ -21,24 +21,54 @@ class Files extends React.Component{
         pagelist:null,
         currentPage : 1,
         numberPerPage :9,
-        numberOfPages : 1
+        numberOfPages : 1,
+        res:null
     };
-    componentWillMount(){
+    componentDidMount(){
+        // console.log("mounted!!!");
+        var storage= JSON.parse(localStorage.getItem("sessionid"));
+        if(storage || storage.uid===null){
+            this.setState({uid:storage.uid});
+            this.setState({owner:storage.uid});
+            this.ref= base.syncState(`${storage.uid}/savefiles`,{
+                context:this,
+                state:'savefiles'
+            });
+        }
+        else{
+            this.handleauth();
+        }
+        const res= localStorage.getItem("CodeBix");
+        this.setState({res:res});
+        localStorage.setItem("CodeBix",res);
+
+    }
+    componentWillUnmount(){
+        // console.log("unmounted!!!");
+        if(this.ref){
+            base.removeBinding(this.ref);
+        }
+        if(this.state.res!==null){
+            localStorage.setItem("CodeBix",this.state.res);
+        }
+        var id={
+            uid:null
+        }
+        localStorage.setItem("sessionid",JSON.stringify(id));
+    }
+    componentDidUpdate(){
+        var id={
+            uid:this.state.uid
+        }
+        localStorage.setItem("sessionid",JSON.stringify(id));
+    }
+    handleauth=()=>{
+        // console.log("yyyyyy");
         firebase.auth().onAuthStateChanged(user=>{
             if(user){  
                 this.authHandler({user});
             }
-        })
-      
-    }
-    componentDidMount(){
-        const res= localStorage.getItem("CodeBix");
-        localStorage.setItem("CodeBix",res);
-    }
-    componentWillUnmount(){
-        if(this.ref){
-            base.removeBinding(this.ref);
-        }
+        });
     }
     authHandler= async (authdata)=>{
         // look up a store ito the firebase.
@@ -58,8 +88,8 @@ class Files extends React.Component{
                 context:this,
                 state:'savefiles'
             });
-   
-
+            console.log("authanticate!!");
+        
     }
 
     setshare=()=>{
@@ -77,6 +107,7 @@ class Files extends React.Component{
             this.setState({flag:false});
         }
         setTimeout(() => {
+            // console.log(this.state.savefiles);
             Object.keys(this.state.savefiles).map((key)=>{
                 if(this.state.savefiles[key].mode===val){
                     result[key]=this.state.savefiles[key];
@@ -84,23 +115,23 @@ class Files extends React.Component{
             });    
             this.setState({result:result});
             this.getNumberOfPages(result);
-        },2000);
+        },3000);
         setTimeout(() => {
             this.loadList();
-        }, 3300);
+        }, 4000);
         
     }
     handledelete=(ind)=>{
         let savefiles = {...this.state.savefiles};
         let result = {...this.state.result};
-        console.table(savefiles);
+        // console.table(savefiles);
         savefiles[ind]=null;
-        console.table(savefiles);
+        // console.table(savefiles);
         this.setState({savefiles:savefiles});
         result[ind]=null;
         this.setState({result});
 
-        console.table(this.state.savefiles);  
+        // console.table(this.state.savefiles);  
     }
     editfile=(val)=>{
         const win=window.open(`/files/${btoa(this.state.uid)}/${val}`,'_blank');
@@ -155,7 +186,6 @@ class Files extends React.Component{
             }
         }
         this.setState({pagelist:res});
-        
     }
     render(){
         return(
@@ -172,7 +202,7 @@ class Files extends React.Component{
                         </div>
                         
                     </nav>
-                    <Share isShare={this.state.isShare} setshare={this.setshare} path={this.props.match.url} id={this.state.id} uid={this.state.uid} />
+                    <Share isShare={this.state.isShare} setshare={this.setshare} path={window.location.href} id={this.state.id} uid={this.state.uid} />
                     <div className="container">
                         <br></br>
                         <div className="back-div">
@@ -190,7 +220,7 @@ class Files extends React.Component{
                         </div>
                         <br></br>
                         <Container style={{border:"1px solid lightgray",paddingBottom:"20px",marginTop:"10px",minHeight:"450px",maxHeight:"450px",overflow:"scroll"}}>
-                            <Filecontainer result={this.state.pagelist} flag={this.state.flag} handledelete={this.handledelete} editfile={this.editfile} setid={this.setid} setshare={this.setshare}/>
+                            <Filecontainer uid={this.state.uid} result={this.state.pagelist} flag={this.state.flag} handledelete={this.handledelete} editfile={this.editfile} setid={this.setid} setshare={this.setshare}/>
                         </Container>
                         <Row>
                             <Col lg="4" md="3" sm="2" xs="1"></Col>
