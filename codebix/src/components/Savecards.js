@@ -17,8 +17,6 @@ class Savecards extends React.Component{
         if(!this.props.result[this.props.ind]){
             return null;
         }
-        if(!this.props.uid)
-            console.log("nulllll");
         return(
             <Col lg="4" md="6" sm="9" xs="12">
                 <div className="card-wrap">
