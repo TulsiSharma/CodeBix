@@ -409,8 +409,8 @@ class App extends React.Component{
             this.setstatus(data.name);
             
         }, 1000);
-        // on(this.state.editor,"keypress",this.changedata);
-        // on(this.state.editor,"keyup",this.change_after_no_type);
+        on(this.state.editor,"keypress",this.changedata);
+        on(this.state.editor,"keyup",this.change_after_no_type);
         }
     }
     change_after_no_type=()=>{
