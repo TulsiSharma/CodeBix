@@ -27,7 +27,7 @@ class Files extends React.Component{
     componentDidMount(){
         // console.log("mounted!!!");
         var storage= JSON.parse(localStorage.getItem("sessionid"));
-        if(storage || storage.uid===null){
+        if(storage && storage.uid!==null){
             this.ref= base.syncState(`${storage.uid}/savefiles`,{
                 context:this,
                 state:'savefiles'
