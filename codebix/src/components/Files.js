@@ -28,12 +28,12 @@ class Files extends React.Component{
         // console.log("mounted!!!");
         var storage= JSON.parse(localStorage.getItem("sessionid"));
         if(storage || storage.uid===null){
-            this.setState({uid:storage.uid});
-            this.setState({owner:storage.uid});
             this.ref= base.syncState(`${storage.uid}/savefiles`,{
                 context:this,
                 state:'savefiles'
             });
+            this.setState({uid:storage.uid});
+            this.setState({owner:storage.uid});
         }
         else{
             this.handleauth();
